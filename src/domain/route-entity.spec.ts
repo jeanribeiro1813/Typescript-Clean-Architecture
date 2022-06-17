@@ -1,5 +1,4 @@
-import { getTokenSourceMapRange } from "typescript"
-import { Route, RouteProps } from "./route.entity"
+import { Route, RouteProps } from "./route-entity"
 
 describe('Route test',()=>{
 
@@ -8,17 +7,18 @@ describe('Route test',()=>{
         let routeProps:RouteProps = {
             title:'Minha Rota',
             startPosition : {lat:0,long:1},
-            endPoints: {lat:2,long:2},
+            endPosition: {lat:2,long:2},
 
         }
         let route= new Route(routeProps)
 
+        expect(route.id).toBeDefined();
         expect(route.props).toStrictEqual({...routeProps,points:[]})
 
          routeProps = {
             title:'Minha Rota',
             startPosition : {lat:0,long:1},
-            endPoints: {lat:2,long:2},
+            endPosition: {lat:2,long:2},
             points:[
                 {lat:32,long:12}
             ]
@@ -40,7 +40,7 @@ describe('Route test',()=>{
         const routeProps:RouteProps = {
             title:'Minha Rota',
             startPosition : {lat:0,long:1},
-            endPoints: {lat:2,long:2},
+            endPosition: {lat:2,long:2},
 
         }
 
@@ -58,7 +58,7 @@ describe('Route test',()=>{
         const routeProps:RouteProps = {
             title:'Minha Rota',
             startPosition : {lat:0,long:1},
-            endPoints: {lat:2,long:2},
+            endPosition: {lat:2,long:2},
 
         }
 
@@ -72,6 +72,33 @@ describe('Route test',()=>{
 
         expect(route.startPosition).toBe(startPosition)
         expect(route.endPosition).toBe(endPosition)
+
+    })
+
+    it('updatePoint method',()=>{
+
+
+        const routeProps:RouteProps = {
+            title:'Minha Rota',
+            startPosition : {lat:0,long:1},
+            endPosition: {lat:2,long:2},
+
+        }
+
+        const route= new Route(routeProps)
+
+        const points = [
+            {lat:10,long:20},
+            {lat:15,long:25},
+            {lat:20,long:30},
+            {lat:25,long:35},
+        ]
+
+
+        route.updatePoints(points)
+
+        expect(route.points).toHaveLength(4)
+        expect(route.points).toBe(points)
 
     })
 

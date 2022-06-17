@@ -1,16 +1,21 @@
+import crypto  from 'crypto'
+
 export type LatLng = {lat:number, long:number}
 
 export type RouteProps = {
      title:string,
       startPosition:LatLng,
-      endPoints:LatLng,
+      endPosition:LatLng,
       points?:LatLng[]
 }
 
 //Eu ter definido poinst como não obrigatorio , meu construtor exige uma regra
 export class Route{
+    public readonly id:string
     public props:Required<RouteProps>
-    constructor(props:RouteProps){
+    constructor(props:RouteProps,id?:string){
+
+        this.id = id || crypto.randomUUID()
 
         // o props vai receber todo o props , e se tiver points vai receber points ou [] vazio
         this.props = {
@@ -33,6 +38,11 @@ export class Route{
         this.endPosition = endPosition
     }
 
+    updatePoints(points:LatLng[]){
+        
+        this.points= points
+    }
+
     get title (){
         return this.props.title 
     }
@@ -51,11 +61,25 @@ export class Route{
     
 
     get endPosition (){
-        return this.props.endPoints 
+        return this.props.endPosition 
     }
 
     private set endPosition(value:LatLng){
-        this.props.endPoints = value
+        this.props.endPosition = value
+    }
+
+    get points (){
+        return this.props.points 
+    }
+
+    private set points(value:LatLng[]){
+        this.props.points = value
+    }
+
+    toJson(){
+        return{
+        id:this.id,
+        ...this.props}
     }
 }
 
